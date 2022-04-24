@@ -186,7 +186,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     if(!list && result)
     {
         *result = RLE_LIST_NULL_ARGUMENT;
-        return 0;
+        return NULL;
     }
     if(result)
     {
