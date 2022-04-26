@@ -4,9 +4,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define BUFFER_SIZE 1
-
-
 RLEList asciiArtRead(FILE* in_stream) {
     RLEList newRLE = RLEListCreate();
     if (!newRLE) {
@@ -15,13 +12,9 @@ RLEList asciiArtRead(FILE* in_stream) {
     }
     assert(newRLE);
     char buffer;
-    RLEListResult  appendingResult;
     do {
         buffer = fgetc(in_stream);
-        if(buffer != EOF)
-        {
-            appendingResult = RLEListAppend(newRLE, buffer);
-        }
+        RLEListResult  appendingResult = RLEListAppend(newRLE, buffer);
         if(appendingResult != RLE_LIST_SUCCESS) {
             printf("error in appending the char to a new list\n");
         }
