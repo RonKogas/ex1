@@ -120,9 +120,11 @@ RLEListResult RLEListRemove(RLEList list, int index)
     {
         if(list->numOfAppearences == 1 && list->nextRLE)
         {
+            RLEList secondRLE= list->nextRLE;
             list->value = (list->nextRLE)->value;
             list->numOfAppearences = (list->nextRLE)->numOfAppearences;
             list->nextRLE = (list->nextRLE)->nextRLE;
+            free(secondRLE);
         }
         else
         {
@@ -137,8 +139,10 @@ RLEListResult RLEListRemove(RLEList list, int index)
         list->nextRLE = (list->nextRLE)->nextRLE;
         while(list->nextRLE&&list->value==(list->nextRLE)->value)
         {
+            RLEList secondRLE= list->nextRLE;
             list->numOfAppearences+=(list->nextRLE)->numOfAppearences;
             list->nextRLE = (list->nextRLE)->nextRLE;
+            free(secondRLE);
         }
     }
     else

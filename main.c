@@ -33,7 +33,7 @@ RLEListResult writeInverted(FILE* source,FILE* target);
  * c otherwise
  */
 char charInverter(char c);
-int main(int argc, char* argv)
+int main(int argc, char** argv)
 {
     //check that there are enough arguments
     if(argc!=4)
@@ -43,20 +43,18 @@ int main(int argc, char* argv)
     //open the source and target files
     FILE* source = fopen(argv[2], "r");
 	if (!source) {
-		error("Error: cannot open", argv[2]);
 		return 0;
 	}
 	FILE* target = fopen(argv[3], "w");
 	if (!target) {
 		fclose(source);
-		error("Error: cannot open", argv[3]);
 		return 0;
 	}
-    if(strcmp(argv[1],"-e"))
+    if(!strcmp(argv[1],"-e"))
     {
         writeEncoded(source,target);
     }
-    else if(strcmp(argv[1],"-i"))
+    else if(!strcmp(argv[1],"-i"))
     {
         writeInverted(source,target);
     }
@@ -80,7 +78,7 @@ RLEListResult writeInverted(FILE* source,FILE* target)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    return asciiArtPrint(image, target)
+    return asciiArtPrint(image, target);
 }
 
 char charInverter(char c)
