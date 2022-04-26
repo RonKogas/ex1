@@ -12,6 +12,53 @@ struct RLEList_t{
 
 //implement the functions here
 static int RLENumOfNodes(RLEList list);
+static int findStringSize(RLEList list);
+static void numToString(char* Str, int num);
+static int findNumToStringSize(int num);
+
+static void numToString(char* str, int num)
+{
+    if(num==0)
+    {
+        str[0]='0';
+        return;
+    }
+    int i=findNumToStringSize(num)-1;
+    while(num)
+    {
+        str[i--] = (num%10)+'0';
+        num /= 10;
+    }
+}
+
+static int findStringSize(RLEList list)
+{
+    int size=1;
+    while(list)
+    {
+        size+=2;
+        int num = list->numOfAppearences;
+        size += findNumToStringSize(num);
+        list=list->nextRLE;
+    }
+    return size;
+}
+
+static int findNumToStringSize(int num)
+{
+    if(num==0)
+    {
+        return 1;
+    }
+    int size=0;
+    while(num)
+    {
+        size++;
+        num /= 10;
+    }
+    return size;
+}
+
 
 static int RLENumOfNodes(RLEList list)
 {
@@ -150,7 +197,7 @@ RLEListResult RLEListRemove(RLEList list, int index)
     }
     else
     {
-        list->numOfAppearences -= 1;
+        (list->nextRLE)->numOfAppearences -= 1;
     }
     return RLE_LIST_SUCCESS;
 }
@@ -197,12 +244,13 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
         *result = RLE_LIST_SUCCESS;
     }
     const int numOfNodes = RLENumOfNodes(list);
-    char* outString = (char*)malloc( sizeof(char) * (numOfNodes*3+1) );
+    char* outString = (char*)malloc( sizeof(char) * findStringSize(list));
     int i=0;
     for (int line=0; line<numOfNodes; ++line)
     {
         outString[i++] = list->value;
-        outString[i++] = list->numOfAppearences+'0';
+        numToString(outString+i,list->numOfAppearences);
+        i+=findNumToStringSize(list->numOfAppearences);
         outString[i++] = '\n';
         list = list->nextRLE;
     }
@@ -212,7 +260,7 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
 
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
 {
-    if(!list)
+    if(!list||!map_function)
     {
         return RLE_LIST_NULL_ARGUMENT;
     }
