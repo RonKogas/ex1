@@ -67,7 +67,9 @@ int main(int argc, char** argv)
 RLEListResult writeEncoded(FILE* source,FILE* target)
 {
     RLEList image=asciiArtRead(source);
-    return asciiArtPrintEncoded(image, target);
+    RLEListResult returnValue= asciiArtPrintEncoded(image, target);
+    RLEListDestroy(image);
+    return returnValue;
 }
 
 
@@ -76,9 +78,12 @@ RLEListResult writeInverted(FILE* source,FILE* target)
     RLEList image=asciiArtRead(source);
     if(RLEListMap(image, charInverter)!=RLE_LIST_SUCCESS)
     {
+        RLEListDestroy(image);
         return RLE_LIST_NULL_ARGUMENT;
     }
-    return asciiArtPrint(image, target);
+    RLEListResult returnValue= asciiArtPrint(image, target);
+    RLEListDestroy(image);
+    return returnValue;
 }
 
 char charInverter(char c)

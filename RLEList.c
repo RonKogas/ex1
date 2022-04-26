@@ -33,6 +33,7 @@ RLEList RLEListCreate()
     }
     ptr->numOfAppearences =0;
     ptr->nextRLE = NULL;
+    ptr->value=0;
     return ptr;
 }
 
@@ -136,7 +137,9 @@ RLEListResult RLEListRemove(RLEList list, int index)
     //in this case the index was in the next nodes
     if((list->nextRLE)->numOfAppearences==1)
     {
+        RLEList secondRLE= list->nextRLE;
         list->nextRLE = (list->nextRLE)->nextRLE;
+        free(secondRLE);
         while(list->nextRLE&&list->value==(list->nextRLE)->value)
         {
             RLEList secondRLE= list->nextRLE;
