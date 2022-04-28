@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#define NULL_CHAR '\0'
+
 RLEList asciiArtRead(FILE* in_stream) {
     RLEList newRLE = RLEListCreate();
     if (!newRLE) {
@@ -11,18 +13,17 @@ RLEList asciiArtRead(FILE* in_stream) {
         return NULL;
     }
     assert(newRLE);
-    char buffer = '';
-    RLEListResult  appendingResult;
+    char buffer = NULL_CHAR;
     do {
         buffer = fgetc(in_stream);
         if(buffer != EOF)
-        {    
-            appendingResult = RLEListAppend(newRLE, buffer);
+        {
+            RLEListResult appendingResult = RLEListAppend(newRLE, buffer);
+            if(appendingResult != RLE_LIST_SUCCESS) {
+                printf("error in appending the char to a new list\n");
+            }
+            assert(appendingResult == RLE_LIST_SUCCESS);
         }
-        if(appendingResult != RLE_LIST_SUCCESS) {
-            printf("error in appending the char to a new list\n");
-        }
-        assert(appendingResult == RLE_LIST_SUCCESS);
     } while(buffer != EOF);
     return newRLE;
 }
