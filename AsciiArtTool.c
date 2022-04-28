@@ -11,7 +11,7 @@ RLEList asciiArtRead(FILE* in_stream) {
         return NULL;
     }
     assert(newRLE);
-    char buffer;
+    char buffer = '';
     RLEListResult  appendingResult;
     do {
         buffer = fgetc(in_stream);
