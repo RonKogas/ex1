@@ -2,6 +2,12 @@
 #include <string.h>
 #include "RLEList.h"
 #include "AsciiArtTool.h"
+
+#define NUM_OF_ARGUMENTS (4)
+#define SOURCE_ARGUMENT (2)
+#define TARGET_ARGUMENT (3)
+#define FLAG_ARGUMENT (1)
+
 /**
  * @brief takes image from file source and write it 
  * in encoded format to target
@@ -12,6 +18,7 @@
  * RLE_LIST_SUCCESS in case of success.
  */
 RLEListResult writeEncoded(FILE* source,FILE* target);
+
 /**
  * @brief takes image from file source and write it 
  * in inverted (and not encoded) format to target
@@ -23,6 +30,7 @@ RLEListResult writeEncoded(FILE* source,FILE* target);
  * RLE_LIST_SUCCESS in case of success.
  */
 RLEListResult writeInverted(FILE* source,FILE* target);
+
 /**
  * @brief convert ' '(space) to '@'
  * and '@' to ' '. rest of the chars remain
@@ -33,28 +41,29 @@ RLEListResult writeInverted(FILE* source,FILE* target);
  * c otherwise
  */
 char charInverter(char c);
+
 int main(int argc, char** argv)
 {
     //check that there are enough arguments
-    if(argc!=4)
+    if(argc!=NUM_OF_ARGUMENTS)
     {
         return 0;
     }
     //open the source and target files
-    FILE* source = fopen(argv[2], "r");
+    FILE* source = fopen(argv[SOURCE_ARGUMENT], "r");
 	if (!source) {
 		return 0;
 	}
-	FILE* target = fopen(argv[3], "w");
+	FILE* target = fopen(argv[TARGET_ARGUMENT], "w");
 	if (!target) {
 		fclose(source);
 		return 0;
 	}
-    if(!strcmp(argv[1],"-e"))
+    if(!strcmp(argv[FLAG_ARGUMENT],"-e"))
     {
         writeEncoded(source,target);
     }
-    else if(!strcmp(argv[1],"-i"))
+    else if(!strcmp(argv[FLAG_ARGUMENT],"-i"))
     {
         writeInverted(source,target);
     }
@@ -67,7 +76,7 @@ int main(int argc, char** argv)
 RLEListResult writeEncoded(FILE* source,FILE* target)
 {
     RLEList image=asciiArtRead(source);
-    RLEListResult returnValue= asciiArtPrintEncoded(image, target);
+    RLEListResult returnValue = asciiArtPrintEncoded(image, target);
     RLEListDestroy(image);
     return returnValue;
 }
@@ -75,24 +84,24 @@ RLEListResult writeEncoded(FILE* source,FILE* target)
 
 RLEListResult writeInverted(FILE* source,FILE* target)
 {
-    RLEList image=asciiArtRead(source);
-    if(RLEListMap(image, charInverter)!=RLE_LIST_SUCCESS)
+    RLEList image = asciiArtRead(source);
+    if( RLEListMap(image, charInverter) != RLE_LIST_SUCCESS )
     {
         RLEListDestroy(image);
         return RLE_LIST_NULL_ARGUMENT;
     }
-    RLEListResult returnValue= asciiArtPrint(image, target);
+    RLEListResult returnValue = asciiArtPrint(image, target);
     RLEListDestroy(image);
     return returnValue;
 }
 
 char charInverter(char c)
 {
-    if(c==' ')
+    if( c == ' ' )
     {
         return '@';
     }
-    else if(c=='@')
+    else if( c == '@' )
     {
         return ' ';
     }
