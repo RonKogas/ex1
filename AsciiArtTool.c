@@ -20,7 +20,7 @@ RLEList asciiArtRead(FILE* in_stream) {
         {
             RLEListResult appendingResult = RLEListAppend(newRLE, buffer);
             if(appendingResult != RLE_LIST_SUCCESS) {
-                printf("error in appending the char to a new list\n");
+                fprintf(stderr, "error in appending the char to a new list\n");
             }
             assert(appendingResult == RLE_LIST_SUCCESS);
         }
