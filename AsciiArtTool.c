@@ -1,9 +1,7 @@
 #include "AsciiArtTool.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-
 #define NULL_CHAR '\0'
 
 RLEList asciiArtRead(FILE* in_stream) {
