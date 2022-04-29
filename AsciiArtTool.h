@@ -16,7 +16,7 @@
 
 
 /**
-* This functions gets a file that contains an AsciiArt image and returns the RLE list of all the characters in the image.
+* This function gets a file that contains an AsciiArt image and returns the RLE list of all the characters in the image.
 *
 * @param in_stream - a pointer to a file that contains an image to compress.
 *
@@ -26,7 +26,7 @@ RLEList asciiArtRead(FILE* in_stream);
 
 
 /**
-* This function prints to an output file, an image according the characters in the RLE list.
+* This function prints to an output file, an image according the characters in the given RLE list.
 *
 * @param list - RLE list of all the characters in the image.
 * @param out_stream - a pointer to an output file.
